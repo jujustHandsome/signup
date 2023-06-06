@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="qwe.css">
+<html>
+<head>
+  <title>Sign Up and Login Form</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Sign Up</button>
+      </div>
+    </form>
+    <div class="message" id="signup-message"></div>
+
+    <h2>Login</h2>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username" name="login-username" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="login-password" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+    </form>
+    <div class="message" id="login-message"></div>
+  </div>
+
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      var users = JSON.parse(localStorage.getItem("users")) || [];
+
+      var existingUser = users.find(function(user) {
+        return user.username === username;
+      });
+
+      if (existingUser) {
+        document.getElementById("signup-message").textContent = "Username already exists. Please choose a different username.";
+      } else {
+        var newUser = {
+          username: username,
+          password: password
+        };
+
+        users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(users));
+
+        document.getElementById("signup-message").textContent = "Sign up successful!";
+      }
+
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    });
+
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var loginUsername = document.getElementById("login-username").value;
+      var loginPassword = document.getElementById("login-password").value;
+
+      var users = JSON.parse(localStorage.getItem("users")) || [];
+
+      var user = users.find(function(user) {
+        return user.username === loginUsername && user.password === loginPassword;
+      });
+
+      if (user) {
+        window.location.href = "https://jujusthandsome.github.io/ChoTin-1.7/index.html";
+        document.getElementById("login-message").textContent = "Login successful!";
+      } else {
+        document.getElementById("login-message").textContent = "Invalid username or password. Please try again.";
+      }
+
+      document.getElementById("login-username").value = "";
+      document.getElementById("login-password").value = "";
+    });
+  </script>
+</body>
+</html>
